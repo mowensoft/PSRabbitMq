@@ -34,7 +34,7 @@
         Optional PSCredential to connect to RabbitMq with
 
     .PARAMETER CertPath
-        Pkcs12/PFX formatted certificate to connect to RabbitMq with.  Prior to connecting, please make sure the system trusts the CA issuer or self-signed SCMB certifiate.
+        Pkcs12/PFX formatted certificate to connect to RabbitMq with.  Prior to connecting, please make sure the system trusts the CA issuer or self-signed certifiate.
 
     .PARAMETER CertPassphrase
         The SecureString Pkcs12/PFX Passphrase of the certificate.
@@ -111,8 +111,8 @@
         [parameter(Mandatory = $false)]
         [string]$Exchange = '',
 
-        [parameter(Mandatory = $True)]
-        [string]$Key,
+        [parameter(Mandatory = $false)]
+        [string]$Key = '',
 
         [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
         [Alias('Payload')]
@@ -166,7 +166,7 @@
     begin
     {
 
-        Write-Progress -id 10 -Activity 'Create SCMB Connection' -Status 'Building connection' -PercentComplete 0
+        Write-Progress -id 10 -Activity 'Create AMQP Connection' -Status 'Building connection' -PercentComplete 0
        
         #Build the connection. Filter bound parameters, splat them.
         $ConnParams = @{ ComputerName = $ComputerName }
@@ -182,8 +182,8 @@
 
         #Create the connection and channel
         $Connection = New-RabbitMqConnectionFactory @ConnParams
-        Write-Progress -id 10 -Activity 'Create SCMB Connection' -Status 'Connection Established' -PercentComplete 75
-        Write-Progress -id 10 -Activity 'Create SCMB Connection' -Status 'Connected' -Completed
+        Write-Progress -id 10 -Activity 'Create AMQP Connection' -Status 'Connection Established' -PercentComplete 75
+        Write-Progress -id 10 -Activity 'Create AMQP Connection' -Status 'Connected' -Completed
         
         $Channel = $Connection.CreateModel()
         $BodyProps = $Channel.CreateBasicProperties()
@@ -286,7 +286,7 @@
             $Body = [System.Text.Encoding]::UTF8.GetBytes($Serialized)
         }
 
-        $Channel.BasicPublish($Exchange, $Key, $BodyProps, $Body)
+        $Channel.BasicPublish($Exchange, $Key, $false, $BodyProps, $Body)
     }
     end
     {

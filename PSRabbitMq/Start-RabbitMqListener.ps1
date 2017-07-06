@@ -49,7 +49,7 @@
         Optional PSCredential to connect to RabbitMq with
 
     .PARAMETER CertPath
-        Pkcs12/PFX formatted certificate to connect to RabbitMq with.  Prior to connecting, please make sure the system trusts the CA issuer or self-signed SCMB certifiate.
+        Pkcs12/PFX formatted certificate to connect to RabbitMq with.  Prior to connecting, please make sure the system trusts the CA issuer or self-signed certifiate.
 
     .PARAMETER CertPassphrase
         The SecureString Pkcs12/PFX Passphrase of the certificate.
@@ -144,14 +144,14 @@
             }
         }
 
-        Write-Progress -id 10 -Activity 'Create SCMB Connection' -Status 'Building connection' -PercentComplete 0
+        Write-Progress -id 10 -Activity 'Create AMQP Connection' -Status 'Building connection' -PercentComplete 0
 
         #Create the connection and channel
         $Connection = New-RabbitMqConnectionFactory @ConnParams
-        Write-Progress -id 10 -Activity 'Create SCMB Connection' -Status 'Connection Established' -PercentComplete 75
+        Write-Progress -id 10 -Activity 'Create AMQP Connection' -Status 'Connection Established' -PercentComplete 75
 
         $Channel = Connect-RabbitMqChannel @ChanParams -Connection $Connection
-        Write-Progress -id 10 -Activity 'Create SCMB Connection' -Status 'Connected' -Completed
+        Write-Progress -id 10 -Activity 'Create AMQP Connection' -Status 'Connected' -Completed
 
         #Create our consumer
         $Consumer = New-Object RabbitMQ.Client.QueueingBasicConsumer($Channel)

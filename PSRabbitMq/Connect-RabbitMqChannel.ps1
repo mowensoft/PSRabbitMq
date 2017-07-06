@@ -92,7 +92,7 @@
     {
         $Channel = $Connection.CreateModel()
 
-        Write-Progress -id 10 -Activity 'Create SCMB Connection' -Status 'Attempting connection to channel' -PercentComplete 80
+        Write-Progress -id 10 -Activity 'Create AMQP Connection' -Status 'Attempting connection to channel' -PercentComplete 80
 
         #Actively declare the Exchange (as non-autodelete, non-durable)
         if($ExchangeType -and ![string]::IsNullOrEmpty($Exchange)) {
@@ -120,7 +120,7 @@
             $Channel.QueueBind($QueueName, $Exchange, $KeyItem)
         }
 
-        Write-Progress -id 10 -Activity 'Create SCMB Connection' -Status ('Conneccted to channel: {0}, {1}, {2}' -f $QueueName, $Exchange, $KeyItem) -PercentComplete 90
+        Write-Progress -id 10 -Activity 'Create AMQP Connection' -Status ('Conneccted to channel: {0}, {1}, {2}' -f $QueueName, $Exchange, $KeyItem) -PercentComplete 90
 
         $Channel
     }

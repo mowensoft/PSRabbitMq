@@ -17,7 +17,7 @@
     Optional PSCredential to connect to RabbitMq with
 
     .PARAMETER CertPath
-    Pkcs12/PFX formatted certificate to connect to RabbitMq with.  Prior to connecting, please make sure the system trusts the CA issuer or self-signed SCMB certifiate.
+    Pkcs12/PFX formatted certificate to connect to RabbitMq with.  Prior to connecting, please make sure the system trusts the CA issuer or self-signed certifiate.
 
     .PARAMETER CertPassphrase
     The SecureString Pkcs12/PFX Passphrase of the certificate.
@@ -62,15 +62,15 @@
     Try
     {
 
-        Write-Progress -id 10 -Activity 'Create SCMB Connection' -Status 'Building connection' -PercentComplete 30
+        Write-Progress -id 10 -Activity 'Create AMQP Connection' -Status 'Building connection' -PercentComplete 30
 
         $Factory = New-Object RabbitMQ.Client.ConnectionFactory
         
         #Add the hostname
-        $HostNameProp = [RabbitMQ.Client.ConnectionFactory].GetField("HostName")
+        $HostNameProp = [RabbitMQ.Client.ConnectionFactory].GetProperty("HostName")
         $HostNameProp.SetValue($Factory, $ComputerName)
 
-        $TcpPortProp = [RabbitMQ.Client.ConnectionFactory].GetField("Port")
+        $TcpPortProp = [RabbitMQ.Client.ConnectionFactory].GetProperty("Port")
         if ( $PSBoundParameters.ContainsKey('Ssl') -and 
              $Ssl -ne [Security.Authentication.SslProtocols]::None -and
              !$PSBoundParameters.ContainsKey('Port')
@@ -94,7 +94,7 @@
             'CertPassphrase' { $SslOptionsParams.Add('CertPassphrase',$CertPassphrase)}
         }
         
-        Write-Progress -id 10 -Activity 'Create SCMB Connection' -Status 'Building connection' -PercentComplete 45
+        Write-Progress -id 10 -Activity 'Create AMQP Connection' -Status 'Building connection' -PercentComplete 45
 
         if($vhost) {
             $vhostProp = [RabbitMQ.Client.ConnectionFactory].GetProperty("VirtualHost")
@@ -113,7 +113,7 @@
     
         $CreateConnectionMethod = [RabbitMQ.Client.ConnectionFactory].GetMethod("CreateConnection", [Type]::EmptyTypes)
         
-        Write-Progress -id 10 -Activity 'Create SCMB Connection' -Status 'Attempting to establish connection' -PercentComplete 60
+        Write-Progress -id 10 -Activity 'Create AMQP Connection' -Status 'Attempting to establish connection' -PercentComplete 60
 
         #We're ready to go! Output is a connection
         $CreateConnectionMethod.Invoke($Factory, "instance,public", $null, $null, $null)

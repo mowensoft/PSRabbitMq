@@ -52,7 +52,7 @@
         Optional PSCredential to connect to RabbitMq with
 
     .PARAMETER CertPath
-        Pkcs12/PFX formatted certificate to connect to RabbitMq with.  Prior to connecting, please make sure the system trusts the CA issuer or self-signed SCMB certifiate.
+        Pkcs12/PFX formatted certificate to connect to RabbitMq with.  Prior to connecting, please make sure the system trusts the CA issuer or self-signed certifiate.
 
     .PARAMETER CertPassphrase
         The SecureString Pkcs12/PFX Passphrase of the certificate.
