@@ -1,20 +1,22 @@
-$hostname = 'hazd-esbmsg001.afcorp.afg'
-$exchange = 'Afc.PolicyAdmin.NewBusiness.Host.Errors'
-$vhost = 'PasHost'
-$username = 'guest'
-$password = ConvertTo-SecureString 'guest' -AsPlainText -Force
+$hostname = 'hapd-esbmsg001.afcorp.afg'
+$exchange = 'Afc.Enterprise.Mail.Backend.Errors'
+$vhost = '/'
+$username = 'Matt'
+$password = ConvertTo-SecureString 'pas' -AsPlainText -Force
 $messageType = 'Afc.PolicyAdmin.Integration.Cycle.Messages.Events.ICycleHasCompleted, Afc.PolicyAdmin.Integration.Cycle.Messages'
 $message = '<ICycleHasCompleted />'
 
 ###############################################################################
 #
-# Modifying anything below this line will void the warranty
+# Modifying anything below this line will void the warranty!
 #
 ###############################################################################
 
-if (!(Get-Module 'PSRabbitMQ')) {
-    Import-Module 'PSRabbitMQ'
+if (Get-Module 'PSRabbitMQ') {
+    Remove-Module 'PSRabbitMQ'
 }
+
+Import-Module '..\PSRabbitMQ'
 
 $messageId = [System.Guid]::NewGuid().ToString('D')
 $headers = @{'NServiceBus.EnclosedMessageTypes' = $messageType}
@@ -24,7 +26,7 @@ Send-RabbitMqMessage `
     -ComputerName $hostname `
     -Exchange $exchange `
     -vhost $vhost `
-    -Ssl [Security.Authentication.SslProtocols]::Tls12
+    -Ssl ([Security.Authentication.SslProtocols]::Tls12) `
     -Key ([string]::Empty) `
     -Credential $credential `
     -headers $headers `

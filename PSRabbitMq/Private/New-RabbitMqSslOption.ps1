@@ -74,7 +74,7 @@
     #Add to factory, or return SslOption
     if($Factory)
     {
-        $SslProp = [RabbitMQ.Client.ConnectionFactory].GetField("Ssl")
+        $SslProp = [RabbitMQ.Client.ConnectionFactory].GetProperty("Ssl")
         $SslProp.SetValue($Factory, $SslOption)
     }
 
